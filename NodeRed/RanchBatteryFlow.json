@@ -40,6 +40,22 @@
         "env": []
     },
     {
+        "id": "aaa87ba009c361b1",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6555bc107374a35d",
+        "type": "tab",
+        "label": "BoneYard",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "8f567a3c2f4cef82",
         "type": "serial-port",
         "serialport": "/dev/ttyUSB1",
@@ -64,7 +80,7 @@
         "name": "Pack 1",
         "tab": "8a4a35e7495ae9e3",
         "order": 1,
-        "disp": true,
+        "disp": false,
         "width": "6",
         "collapse": false,
         "className": ""
@@ -218,7 +234,7 @@
         "name": "Pack 2",
         "tab": "8a4a35e7495ae9e3",
         "order": 2,
-        "disp": true,
+        "disp": false,
         "width": "6",
         "collapse": false,
         "className": ""
@@ -259,7 +275,7 @@
         "name": "Pack 3",
         "tab": "8a4a35e7495ae9e3",
         "order": 4,
-        "disp": true,
+        "disp": false,
         "width": "6",
         "collapse": false,
         "className": ""
@@ -297,10 +313,10 @@
     {
         "id": "8e5a7ea4290e30ef",
         "type": "ui_group",
-        "name": "Pack 4 Metrics",
+        "name": "Pack 4 ",
         "tab": "8a4a35e7495ae9e3",
         "order": 4,
-        "disp": true,
+        "disp": false,
         "width": "6",
         "collapse": false,
         "className": ""
@@ -315,6 +331,25 @@
         "width": "6",
         "collapse": false,
         "className": ""
+    },
+    {
+        "id": "68c540acd46c6057",
+        "type": "serial-port",
+        "serialport": "/dev/ttyUSB4",
+        "serialbaud": "19200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "0x7e",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "0xd",
+        "bin": "bin",
+        "out": "char",
+        "addchar": "0x13",
+        "responsetimeout": "10000"
     },
     {
         "id": "e0e2ca68b1f975b8",
@@ -450,7 +485,7 @@
         "name": "Timestamp",
         "active": true,
         "tosidebar": true,
-        "console": false,
+        "console": true,
         "tostatus": true,
         "complete": "payload",
         "targetType": "msg",
@@ -473,8 +508,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 710,
-        "y": 560,
+        "x": 890,
+        "y": 440,
         "wires": []
     },
     {
@@ -533,7 +568,8 @@
         "wires": [
             [
                 "cadc2af214ba64d0",
-                "fc8f06ee3180fd13"
+                "fc8f06ee3180fd13",
+                "1259ee8746fecda0"
             ]
         ]
     },
@@ -675,7 +711,7 @@
         "statusVal": "payload",
         "statusType": "auto",
         "x": 890,
-        "y": 460,
+        "y": 380,
         "wires": []
     },
     {
@@ -835,6 +871,25 @@
         "wires": []
     },
     {
+        "id": "1259ee8746fecda0",
+        "type": "function",
+        "z": "8e94d4740899aba9",
+        "name": "",
+        "func": "buf= Buffer.from(msg.payload.data);\n\nvar size = buf.length;\n// Read first 8 bits\nvar Month = parseInt(\"0x\"+msg.payload.data[0],1);\n//var Month=msg.payload.data[0];\n\nvar Day = buf.readInt8(1);\nvar Hours = buf.readInt8(2);\nvar Minutes = buf.readInt8(3);\nvar Seconds = buf.readInt8(4);\n\n//var Time = ('0' +Hours).slice(-2)+':'+('0' +Minutes).slice(-2)+':'+('0' +Seconds).slice(-2);\nvar Time = Month;\n\nmsg.payload = Time;\nreturn msg;\n  \n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 440,
+        "wires": [
+            [
+                "a981bb8e41f934a6"
+            ]
+        ]
+    },
+    {
         "id": "bae547ae70a96572",
         "type": "buffer-parser",
         "z": "b4c26fd755e75352",
@@ -868,12 +923,11 @@
         "fanOutMultipleResult": false,
         "setTopic": true,
         "outputs": 1,
-        "x": 750,
-        "y": 360,
+        "x": 730,
+        "y": 300,
         "wires": [
             [
-                "9ecf60f6f8b620de",
-                "b22191bba73602b6"
+                "9ecf60f6f8b620de"
             ]
         ]
     },
@@ -1047,7 +1101,7 @@
         "setTopic": true,
         "outputs": 16,
         "x": 1020,
-        "y": 380,
+        "y": 320,
         "wires": [
             [
                 "8c2da28f164c8795"
@@ -1344,7 +1398,7 @@
         "z": "b4c26fd755e75352",
         "name": "",
         "group": "f938b7bcae72e8c7",
-        "order": 9,
+        "order": 10,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -1538,7 +1592,6 @@
         "y": 1220,
         "wires": [
             [
-                "a9971c28ccf810aa",
                 "ea37feba4b505550",
                 "b8e346f31c179748"
             ]
@@ -1568,44 +1621,9 @@
         "y": 1220,
         "wires": [
             [
-                "b21803ed04f42851",
                 "ab0d95160edaefe3"
             ]
         ]
-    },
-    {
-        "id": "b21803ed04f42851",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "",
-        "active": false,
-        "tosidebar": false,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1550,
-        "y": 1160,
-        "wires": []
-    },
-    {
-        "id": "a9971c28ccf810aa",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "",
-        "active": false,
-        "tosidebar": false,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1770,
-        "y": 1060,
-        "wires": []
     },
     {
         "id": "ea37feba4b505550",
@@ -1613,7 +1631,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Battery Remaining",
         "group": "f938b7bcae72e8c7",
-        "order": 1,
+        "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -1631,7 +1649,7 @@
         "seg2": "",
         "className": "",
         "x": 1810,
-        "y": 1140,
+        "y": 1180,
         "wires": []
     },
     {
@@ -1640,7 +1658,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Tempature",
         "group": "f938b7bcae72e8c7",
-        "order": 3,
+        "order": 4,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -1998,23 +2016,6 @@
         "wires": []
     },
     {
-        "id": "b22191bba73602b6",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "P1 Cell Metrics",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1020,
-        "y": 220,
-        "wires": []
-    },
-    {
         "id": "d732d6ce14d4540f",
         "type": "serial out",
         "z": "b4c26fd755e75352",
@@ -2055,8 +2056,8 @@
         "z": "b4c26fd755e75352",
         "name": "Read USB1",
         "serial": "8f567a3c2f4cef82",
-        "x": 70,
-        "y": 160,
+        "x": 90,
+        "y": 240,
         "wires": [
             [
                 "3c6602980a88db6d",
@@ -2078,7 +2079,7 @@
         "statusVal": "payload",
         "statusType": "auto",
         "x": 410,
-        "y": 120,
+        "y": 140,
         "wires": []
     },
     {
@@ -2445,7 +2446,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Tempature",
         "group": "f938b7bcae72e8c7",
-        "order": 4,
+        "order": 5,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -2511,7 +2512,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Tempature",
         "group": "f938b7bcae72e8c7",
-        "order": 5,
+        "order": 6,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -2604,7 +2605,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Tempature",
         "group": "f938b7bcae72e8c7",
-        "order": 6,
+        "order": 7,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -2631,7 +2632,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Tempature",
         "group": "f938b7bcae72e8c7",
-        "order": 7,
+        "order": 8,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -2658,7 +2659,7 @@
         "z": "b4c26fd755e75352",
         "name": "Pack Tempature",
         "group": "f938b7bcae72e8c7",
-        "order": 8,
+        "order": 9,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -2685,7 +2686,7 @@
         "z": "b4c26fd755e75352",
         "name": "",
         "group": "f938b7bcae72e8c7",
-        "order": 2,
+        "order": 3,
         "width": 6,
         "height": 3,
         "label": "Battery Remaining",
@@ -2718,7 +2719,7 @@
         "useDifferentColor": false,
         "className": "",
         "x": 1790,
-        "y": 1180,
+        "y": 1260,
         "wires": [
             []
         ]
@@ -2763,7 +2764,7 @@
         "repair": false,
         "outputs": 2,
         "x": 410,
-        "y": 180,
+        "y": 300,
         "wires": [
             [
                 "e9c16e4704ea38b3"
@@ -2814,186 +2815,9 @@
         "y": 120,
         "wires": [
             [
-                "c59fe3437a81e810",
-                "adafb92737f1fe63",
-                "43c7fc147f61add3"
+                "25a32c801af82a97"
             ]
         ]
-    },
-    {
-        "id": "c59fe3437a81e810",
-        "type": "buffer-parser",
-        "z": "b4c26fd755e75352",
-        "name": "Time Splitter",
-        "data": "payload.data",
-        "dataType": "msg",
-        "specification": "spec",
-        "specificationType": "ui",
-        "items": [
-            {
-                "type": "int8",
-                "name": "Month",
-                "offset": 0,
-                "length": 1,
-                "offsetbit": 0,
-                "scale": "0",
-                "mask": ""
-            },
-            {
-                "type": "int8",
-                "name": "Day",
-                "offset": 1,
-                "length": 1,
-                "offsetbit": 0,
-                "scale": "0",
-                "mask": ""
-            },
-            {
-                "type": "int8",
-                "name": "Hour",
-                "offset": 2,
-                "length": 1,
-                "offsetbit": 0,
-                "scale": "0",
-                "mask": ""
-            },
-            {
-                "type": "int8",
-                "name": "Minute",
-                "offset": 3,
-                "length": 1,
-                "offsetbit": 0,
-                "scale": "0",
-                "mask": ""
-            },
-            {
-                "type": "int8",
-                "name": "Second",
-                "offset": 4,
-                "length": 1,
-                "offsetbit": 0,
-                "scale": "0",
-                "mask": ""
-            }
-        ],
-        "swap1": "",
-        "swap2": "",
-        "swap3": "",
-        "swap1Type": "swap",
-        "swap2Type": "swap",
-        "swap3Type": "swap",
-        "msgProperty": "payload",
-        "msgPropertyType": "str",
-        "resultType": "value",
-        "resultTypeType": "output",
-        "multipleResult": true,
-        "fanOutMultipleResult": true,
-        "setTopic": true,
-        "outputs": 5,
-        "x": 1010,
-        "y": 60,
-        "wires": [
-            [
-                "12d1f3b40a6ee51c"
-            ],
-            [
-                "5594c6d9b659a1a7"
-            ],
-            [
-                "886e7b01e9a982de"
-            ],
-            [
-                "b3be5894ac878533"
-            ],
-            [
-                "c0a62fb1f8ea6795"
-            ]
-        ]
-    },
-    {
-        "id": "c0a62fb1f8ea6795",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "Second",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1820,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "b3be5894ac878533",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "Minute",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1670,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "886e7b01e9a982de",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "Hour",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1530,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "5594c6d9b659a1a7",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "Day",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1390,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "12d1f3b40a6ee51c",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "Month",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1250,
-        "y": 20,
-        "wires": []
     },
     {
         "id": "6a22118ef9c8ab50",
@@ -3021,56 +2845,39 @@
         ]
     },
     {
-        "id": "adafb92737f1fe63",
+        "id": "25a32c801af82a97",
         "type": "function",
         "z": "b4c26fd755e75352",
-        "name": "",
-        "func": "buf= Buffer.from(msg.payload.data);\n\nvar size = buf.length;\n// Read first 8 bits\nvar Month=parseInt(Buffer[0],8);\n\nvar Day = buf.readInt8(1);\nvar Hours = buf.readInt8(2);\nvar Minutes = buf.readInt8(3);\nvar Seconds = buf.readInt8(4);\n\n//var Time = ('0' +Hours).slice(-2)+':'+('0' +Minutes).slice(-2)+':'+('0' +Seconds).slice(-2);\nvar Time = Month;\n\nmsg.payload = Time;\nreturn msg;\n  \n",
+        "name": "Time Parser",
+        "func": "var months={1:\"January\",2:\"February\",3:\"March\",4:\"April\",5:\"May\",6:\"June\",7:\"July\",8:\"August\",9:\"September\",10:\"October\",11:\"November\",12:\"December\"};\n\nvar MonthStr = msg.payload.data.substr(0,2);\nvar DayStr = msg.payload.data.substr(2,2);\nvar HourStr = msg.payload.data.substr(4,2);\nvar MinuteStr = msg.payload.data.substr(6,2);\n//msg.payload = Buffer.from(msg.payload.data,\"hex\").toString()\nvar MonthValue = parseInt(MonthStr,16);\nvar DayValue = parseInt(DayStr,16);\nvar HourValue = parseInt(HourStr,16);\nvar MinuteValue = parseInt(MinuteStr,16);\n\nmsg.payload = months[MonthValue] + \"-\" + \n              DayValue.toString() + \" @ \" + \n              HourValue.toString() + \":\" + \n              MinuteValue.toString().padStart(2,\"0\");\n              \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1000,
+        "x": 1010,
         "y": 120,
         "wires": [
             [
-                "29d3c4dccf543fd3"
+                "539416a544c611c8"
             ]
         ]
     },
     {
-        "id": "29d3c4dccf543fd3",
-        "type": "debug",
+        "id": "539416a544c611c8",
+        "type": "ui_text",
         "z": "b4c26fd755e75352",
+        "group": "f938b7bcae72e8c7",
+        "order": 1,
+        "width": "6",
+        "height": "2",
         "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1190,
+        "label": "Pack 1 Updated",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1380,
         "y": 120,
-        "wires": []
-    },
-    {
-        "id": "43c7fc147f61add3",
-        "type": "debug",
-        "z": "b4c26fd755e75352",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1010,
-        "y": 160,
         "wires": []
     },
     {
@@ -3107,8 +2914,8 @@
         "fanOutMultipleResult": false,
         "setTopic": true,
         "outputs": 1,
-        "x": 290,
-        "y": 260,
+        "x": 470,
+        "y": 360,
         "wires": [
             [
                 "45b7d8085ed198f1",
@@ -3285,8 +3092,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 16,
-        "x": 620,
-        "y": 260,
+        "x": 680,
+        "y": 360,
         "wires": [
             [
                 "911d6aa2fd36d74a"
@@ -3372,8 +3179,8 @@
         "fanOutMultipleResult": false,
         "setTopic": true,
         "outputs": 1,
-        "x": 290,
-        "y": 540,
+        "x": 470,
+        "y": 640,
         "wires": [
             [
                 "631eb0798e277eca",
@@ -3424,8 +3231,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 1,
-        "x": 270,
-        "y": 740,
+        "x": 450,
+        "y": 860,
         "wires": [
             [
                 "dc699013140c006f",
@@ -3503,8 +3310,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 5,
-        "x": 510,
-        "y": 800,
+        "x": 690,
+        "y": 920,
         "wires": [
             [
                 "54bed35caffdd097"
@@ -3537,8 +3344,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 790,
-        "y": 800,
+        "x": 970,
+        "y": 920,
         "wires": []
     },
     {
@@ -3554,8 +3361,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 480,
-        "y": 720,
+        "x": 660,
+        "y": 840,
         "wires": []
     },
     {
@@ -3571,8 +3378,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 790,
-        "y": 860,
+        "x": 970,
+        "y": 980,
         "wires": []
     },
     {
@@ -3581,7 +3388,7 @@
         "z": "85c0059b870e43cc",
         "name": "",
         "group": "7bfd752a14e93257",
-        "order": 9,
+        "order": 10,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -3598,8 +3405,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 970,
-        "y": 800,
+        "x": 1150,
+        "y": 920,
         "wires": []
     },
     {
@@ -3681,16 +3488,14 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 6,
-        "x": 520,
-        "y": 540,
+        "x": 700,
+        "y": 640,
         "wires": [
             [
-                "b9086e43f7b911de",
-                "edffd3f5b18b1a5a"
+                "b9086e43f7b911de"
             ],
             [
-                "53765617758c6866",
-                "79e6532b035ebfce"
+                "53765617758c6866"
             ],
             [
                 "2adc3a0376c87945"
@@ -3720,8 +3525,8 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 540,
+        "x": 940,
+        "y": 640,
         "wires": [
             [
                 "bc99eb66bf919272"
@@ -3741,8 +3546,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 820,
-        "y": 920,
+        "x": 1000,
+        "y": 1040,
         "wires": []
     },
     {
@@ -3758,8 +3563,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 800,
-        "y": 1020,
+        "x": 980,
+        "y": 1140,
         "wires": []
     },
     {
@@ -3773,8 +3578,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1060,
-        "y": 940,
+        "x": 1240,
+        "y": 1060,
         "wires": [
             [
                 "d8982bf78b342ef4",
@@ -3803,31 +3608,13 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 800,
-        "y": 980,
+        "x": 980,
+        "y": 1100,
         "wires": [
             [
-                "7c9c93371a606feb",
                 "71a51ec13278c694"
             ]
         ]
-    },
-    {
-        "id": "7c9c93371a606feb",
-        "type": "debug",
-        "z": "85c0059b870e43cc",
-        "name": "",
-        "active": false,
-        "tosidebar": false,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1050,
-        "y": 880,
-        "wires": []
     },
     {
         "id": "d8982bf78b342ef4",
@@ -3842,8 +3629,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 1270,
-        "y": 940,
+        "x": 1450,
+        "y": 1060,
         "wires": []
     },
     {
@@ -3852,7 +3639,7 @@
         "z": "85c0059b870e43cc",
         "name": "Pack Battery Remaining",
         "group": "7bfd752a14e93257",
-        "order": 1,
+        "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -3869,8 +3656,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 1310,
-        "y": 1020,
+        "x": 1490,
+        "y": 1140,
         "wires": []
     },
     {
@@ -3879,7 +3666,7 @@
         "z": "85c0059b870e43cc",
         "name": "Pack Tempature",
         "group": "7bfd752a14e93257",
-        "order": 3,
+        "order": 4,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -3896,8 +3683,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 540,
+        "x": 1160,
+        "y": 640,
         "wires": []
     },
     {
@@ -3938,8 +3725,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 60,
+        "x": 1090,
+        "y": 160,
         "wires": []
     },
     {
@@ -3980,8 +3767,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 120,
+        "x": 1090,
+        "y": 220,
         "wires": []
     },
     {
@@ -4022,8 +3809,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 180,
+        "x": 1090,
+        "y": 280,
         "wires": []
     },
     {
@@ -4064,8 +3851,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 240,
+        "x": 1090,
+        "y": 340,
         "wires": []
     },
     {
@@ -4106,8 +3893,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 300,
+        "x": 1090,
+        "y": 400,
         "wires": []
     },
     {
@@ -4148,8 +3935,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 360,
+        "x": 1090,
+        "y": 460,
         "wires": []
     },
     {
@@ -4190,8 +3977,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 420,
+        "x": 1090,
+        "y": 520,
         "wires": []
     },
     {
@@ -4232,8 +4019,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 480,
+        "x": 1090,
+        "y": 580,
         "wires": []
     },
     {
@@ -4249,8 +4036,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 620,
-        "y": 420,
+        "x": 680,
+        "y": 520,
         "wires": []
     },
     {
@@ -4259,7 +4046,7 @@
         "z": "85c0059b870e43cc",
         "name": "USB2 Serial Port",
         "serial": "2671683380b79836",
-        "x": 350,
+        "x": 410,
         "y": 40,
         "wires": []
     },
@@ -4280,7 +4067,7 @@
         "topic": "",
         "payload": "[126,50,48,48,49,52,54,52,50,69,48,48,50,48,49,70,68,51,53,13]",
         "payloadType": "bin",
-        "x": 110,
+        "x": 150,
         "y": 40,
         "wires": [
             [
@@ -4294,33 +4081,14 @@
         "z": "85c0059b870e43cc",
         "name": "Read USB2",
         "serial": "2671683380b79836",
-        "x": 90,
-        "y": 100,
+        "x": 110,
+        "y": 140,
         "wires": [
             [
-                "707809a975e97b29",
-                "c3c62a98359e481c",
-                "a62d059845a4f936",
-                "7834ed702dc870cb"
+                "7dfe82e4a628f7ae",
+                "faa63c7414517e25"
             ]
         ]
-    },
-    {
-        "id": "707809a975e97b29",
-        "type": "debug",
-        "z": "85c0059b870e43cc",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 270,
-        "y": 100,
-        "wires": []
     },
     {
         "id": "a933a5fc5f96973a",
@@ -4360,8 +4128,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 60,
+        "x": 1290,
+        "y": 160,
         "wires": []
     },
     {
@@ -4402,8 +4170,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 120,
+        "x": 1290,
+        "y": 220,
         "wires": []
     },
     {
@@ -4444,8 +4212,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 180,
+        "x": 1290,
+        "y": 280,
         "wires": []
     },
     {
@@ -4486,8 +4254,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 240,
+        "x": 1290,
+        "y": 340,
         "wires": []
     },
     {
@@ -4528,8 +4296,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 300,
+        "x": 1290,
+        "y": 400,
         "wires": []
     },
     {
@@ -4570,8 +4338,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 360,
+        "x": 1290,
+        "y": 460,
         "wires": []
     },
     {
@@ -4612,8 +4380,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 420,
+        "x": 1290,
+        "y": 520,
         "wires": []
     },
     {
@@ -4654,8 +4422,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 480,
+        "x": 1290,
+        "y": 580,
         "wires": []
     },
     {
@@ -4672,8 +4440,8 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 580,
+        "x": 940,
+        "y": 680,
         "wires": [
             [
                 "b3564a35c2e517cb"
@@ -4682,106 +4450,6 @@
     },
     {
         "id": "b3564a35c2e517cb",
-        "type": "ui_gauge",
-        "z": "85c0059b870e43cc",
-        "name": "Pack Tempature",
-        "group": "7bfd752a14e93257",
-        "order": 4,
-        "width": 2,
-        "height": 2,
-        "gtype": "gage",
-        "title": "Cell Temp 2",
-        "label": "Degrees",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "120",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "className": "",
-        "x": 980,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "a771140a62c33e0d",
-        "type": "debug",
-        "z": "85c0059b870e43cc",
-        "name": "Tempature Metrics",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 490,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "edffd3f5b18b1a5a",
-        "type": "debug",
-        "z": "85c0059b870e43cc",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1170,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "79e6532b035ebfce",
-        "type": "debug",
-        "z": "85c0059b870e43cc",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1170,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "2adc3a0376c87945",
-        "type": "unit-converter",
-        "z": "85c0059b870e43cc",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 620,
-        "wires": [
-            [
-                "85a08bb7e1232b3b"
-            ]
-        ]
-    },
-    {
-        "id": "85a08bb7e1232b3b",
         "type": "ui_gauge",
         "z": "85c0059b870e43cc",
         "name": "Pack Tempature",
@@ -4803,12 +4471,29 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 620,
+        "x": 1160,
+        "y": 680,
         "wires": []
     },
     {
-        "id": "9ff81743441bad80",
+        "id": "a771140a62c33e0d",
+        "type": "debug",
+        "z": "85c0059b870e43cc",
+        "name": "Tempature Metrics",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 690,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "2adc3a0376c87945",
         "type": "unit-converter",
         "z": "85c0059b870e43cc",
         "category": "temperature",
@@ -4821,60 +4506,16 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 660,
+        "x": 940,
+        "y": 720,
         "wires": [
             [
-                "ec84278046b0af21"
+                "85a08bb7e1232b3b"
             ]
         ]
     },
     {
-        "id": "330c0f22ed93cc34",
-        "type": "unit-converter",
-        "z": "85c0059b870e43cc",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 700,
-        "wires": [
-            [
-                "75899a1bbe6986ae"
-            ]
-        ]
-    },
-    {
-        "id": "beb5aa9e122b0617",
-        "type": "unit-converter",
-        "z": "85c0059b870e43cc",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 740,
-        "wires": [
-            [
-                "610d71a208ce21c4"
-            ]
-        ]
-    },
-    {
-        "id": "ec84278046b0af21",
+        "id": "85a08bb7e1232b3b",
         "type": "ui_gauge",
         "z": "85c0059b870e43cc",
         "name": "Pack Tempature",
@@ -4896,8 +4537,101 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 660,
+        "x": 1160,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "9ff81743441bad80",
+        "type": "unit-converter",
+        "z": "85c0059b870e43cc",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 940,
+        "y": 760,
+        "wires": [
+            [
+                "ec84278046b0af21"
+            ]
+        ]
+    },
+    {
+        "id": "330c0f22ed93cc34",
+        "type": "unit-converter",
+        "z": "85c0059b870e43cc",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 940,
+        "y": 800,
+        "wires": [
+            [
+                "75899a1bbe6986ae"
+            ]
+        ]
+    },
+    {
+        "id": "beb5aa9e122b0617",
+        "type": "unit-converter",
+        "z": "85c0059b870e43cc",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 940,
+        "y": 860,
+        "wires": [
+            [
+                "610d71a208ce21c4"
+            ]
+        ]
+    },
+    {
+        "id": "ec84278046b0af21",
+        "type": "ui_gauge",
+        "z": "85c0059b870e43cc",
+        "name": "Pack Tempature",
+        "group": "7bfd752a14e93257",
+        "order": 7,
+        "width": 2,
+        "height": 2,
+        "gtype": "gage",
+        "title": "Cell Temp 2",
+        "label": "Degrees",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1160,
+        "y": 760,
         "wires": []
     },
     {
@@ -4906,7 +4640,7 @@
         "z": "85c0059b870e43cc",
         "name": "Pack Tempature",
         "group": "7bfd752a14e93257",
-        "order": 7,
+        "order": 8,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -4923,8 +4657,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 700,
+        "x": 1160,
+        "y": 800,
         "wires": []
     },
     {
@@ -4933,7 +4667,7 @@
         "z": "85c0059b870e43cc",
         "name": "Pack Tempature",
         "group": "7bfd752a14e93257",
-        "order": 8,
+        "order": 9,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -4950,8 +4684,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 740,
+        "x": 1160,
+        "y": 860,
         "wires": []
     },
     {
@@ -4960,7 +4694,7 @@
         "z": "85c0059b870e43cc",
         "name": "",
         "group": "7bfd752a14e93257",
-        "order": 2,
+        "order": 3,
         "width": 6,
         "height": 3,
         "label": "Battery Remaining",
@@ -4992,10 +4726,184 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1290,
-        "y": 1060,
+        "x": 1470,
+        "y": 1180,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "4ad2cda6f6b192a5",
+        "type": "buffer-parser",
+        "z": "85c0059b870e43cc",
+        "name": "Int to Hex",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "string",
+                "name": "data",
+                "offset": 17,
+                "length": 12,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 460,
+        "y": 200,
+        "wires": [
+            [
+                "ad9e483b8ba6ac30",
+                "fb63b598f7967adb"
+            ]
+        ]
+    },
+    {
+        "id": "ad9e483b8ba6ac30",
+        "type": "function",
+        "z": "85c0059b870e43cc",
+        "name": "Time Parser",
+        "func": "var months={1:\"January\",2:\"February\",3:\"March\",4:\"April\",5:\"May\",6:\"June\",7:\"July\",8:\"August\",9:\"September\",10:\"October\",11:\"November\",12:\"December\"};\n\nvar MonthStr = msg.payload.data.substr(0,2);\nvar DayStr = msg.payload.data.substr(2,2);\nvar HourStr = msg.payload.data.substr(4,2);\nvar MinuteStr = msg.payload.data.substr(6,2);\n//msg.payload = Buffer.from(msg.payload.data,\"hex\").toString()\nvar MonthValue = parseInt(MonthStr,16);\nvar DayValue = parseInt(DayStr,16);\nvar HourValue = parseInt(HourStr,16);\nvar MinuteValue = parseInt(MinuteStr,16);\n\nmsg.payload = months[MonthValue] + \"-\" + \n              DayValue.toString() + \" @ \" + \n              HourValue.toString() + \":\" + \n              MinuteValue.toString().padStart(2,\"0\");\n              \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "f973d005aca85498"
+            ]
+        ]
+    },
+    {
+        "id": "f973d005aca85498",
+        "type": "ui_text",
+        "z": "85c0059b870e43cc",
+        "group": "7bfd752a14e93257",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "name": "",
+        "label": "Pack 2 Updated",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1100,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "7dfe82e4a628f7ae",
+        "type": "switch",
+        "z": "85c0059b870e43cc",
+        "name": "Packet Type",
+        "property": "payload.9",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0x32",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "0x31",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "4ad2cda6f6b192a5"
+            ],
+            [
+                "c3c62a98359e481c",
+                "a62d059845a4f936",
+                "7834ed702dc870cb"
+            ]
+        ],
+        "info": "Switch on packet type.   \n\nThis is at postion 10\n\n"
+    },
+    {
+        "id": "faa63c7414517e25",
+        "type": "debug",
+        "z": "85c0059b870e43cc",
+        "name": "",
+        "active": false,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 440,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "fb63b598f7967adb",
+        "type": "debug",
+        "z": "85c0059b870e43cc",
+        "name": "",
+        "active": false,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 680,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "655d768a4aea4e4e",
+        "type": "inject",
+        "z": "85c0059b870e43cc",
+        "name": "Time Request",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "11",
+        "topic": "",
+        "payload": "[126,50,48,48,49,52,54,52,68,48,48,48,48,70,68,57,66,13]",
+        "payloadType": "bin",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "e1446ce610a195b6"
+            ]
         ]
     },
     {
@@ -5032,8 +4940,8 @@
         "fanOutMultipleResult": false,
         "setTopic": true,
         "outputs": 1,
-        "x": 290,
-        "y": 260,
+        "x": 370,
+        "y": 560,
         "wires": [
             [
                 "77c9543a449004f6",
@@ -5211,7 +5119,7 @@
         "setTopic": true,
         "outputs": 16,
         "x": 620,
-        "y": 260,
+        "y": 560,
         "wires": [
             [
                 "502021a3b36be44b"
@@ -5297,8 +5205,8 @@
         "fanOutMultipleResult": false,
         "setTopic": true,
         "outputs": 1,
-        "x": 290,
-        "y": 540,
+        "x": 390,
+        "y": 840,
         "wires": [
             [
                 "8af70afb6d6e40e1",
@@ -5349,8 +5257,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 1,
-        "x": 270,
-        "y": 740,
+        "x": 370,
+        "y": 1040,
         "wires": [
             [
                 "966b5d5e3368b98a",
@@ -5428,8 +5336,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 5,
-        "x": 510,
-        "y": 800,
+        "x": 610,
+        "y": 1100,
         "wires": [
             [
                 "26e0045de220ee76"
@@ -5462,8 +5370,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 790,
-        "y": 800,
+        "x": 890,
+        "y": 1100,
         "wires": []
     },
     {
@@ -5479,8 +5387,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 480,
-        "y": 720,
+        "x": 580,
+        "y": 1020,
         "wires": []
     },
     {
@@ -5496,8 +5404,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 790,
-        "y": 860,
+        "x": 890,
+        "y": 1160,
         "wires": []
     },
     {
@@ -5506,7 +5414,7 @@
         "z": "937eae9c233e2057",
         "name": "",
         "group": "264e82142241853b",
-        "order": 9,
+        "order": 10,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -5523,8 +5431,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 970,
-        "y": 800,
+        "x": 1070,
+        "y": 1100,
         "wires": []
     },
     {
@@ -5606,8 +5514,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 6,
-        "x": 520,
-        "y": 540,
+        "x": 620,
+        "y": 840,
         "wires": [
             [
                 "72102c15219f9147",
@@ -5645,8 +5553,8 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 540,
+        "x": 860,
+        "y": 840,
         "wires": [
             [
                 "8dc6e18b7a620e28"
@@ -5666,8 +5574,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 820,
-        "y": 920,
+        "x": 920,
+        "y": 1220,
         "wires": []
     },
     {
@@ -5683,8 +5591,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 800,
-        "y": 1020,
+        "x": 900,
+        "y": 1320,
         "wires": []
     },
     {
@@ -5698,8 +5606,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1060,
-        "y": 940,
+        "x": 1160,
+        "y": 1240,
         "wires": [
             [
                 "940ac9919c3f43cd",
@@ -5728,8 +5636,8 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 800,
-        "y": 980,
+        "x": 900,
+        "y": 1280,
         "wires": [
             [
                 "e165ff5827ab7cf0",
@@ -5750,8 +5658,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 1050,
-        "y": 880,
+        "x": 1150,
+        "y": 1180,
         "wires": []
     },
     {
@@ -5767,8 +5675,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 1270,
-        "y": 940,
+        "x": 1370,
+        "y": 1240,
         "wires": []
     },
     {
@@ -5777,7 +5685,7 @@
         "z": "937eae9c233e2057",
         "name": "Pack Battery Remaining",
         "group": "264e82142241853b",
-        "order": 1,
+        "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -5794,8 +5702,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 1310,
-        "y": 1020,
+        "x": 1410,
+        "y": 1320,
         "wires": []
     },
     {
@@ -5804,7 +5712,7 @@
         "z": "937eae9c233e2057",
         "name": "Pack Tempature",
         "group": "264e82142241853b",
-        "order": 3,
+        "order": 4,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -5821,8 +5729,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 540,
+        "x": 1080,
+        "y": 840,
         "wires": []
     },
     {
@@ -5863,8 +5771,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 60,
+        "x": 1010,
+        "y": 360,
         "wires": []
     },
     {
@@ -5905,8 +5813,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 120,
+        "x": 1010,
+        "y": 420,
         "wires": []
     },
     {
@@ -5947,8 +5855,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 180,
+        "x": 1010,
+        "y": 480,
         "wires": []
     },
     {
@@ -5989,8 +5897,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 240,
+        "x": 1010,
+        "y": 540,
         "wires": []
     },
     {
@@ -6031,8 +5939,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 300,
+        "x": 1010,
+        "y": 600,
         "wires": []
     },
     {
@@ -6073,8 +5981,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 360,
+        "x": 1010,
+        "y": 660,
         "wires": []
     },
     {
@@ -6115,8 +6023,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 420,
+        "x": 1010,
+        "y": 720,
         "wires": []
     },
     {
@@ -6157,8 +6065,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 480,
+        "x": 1010,
+        "y": 780,
         "wires": []
     },
     {
@@ -6175,7 +6083,7 @@
         "statusVal": "payload",
         "statusType": "auto",
         "x": 620,
-        "y": 420,
+        "y": 720,
         "wires": []
     },
     {
@@ -6224,9 +6132,7 @@
         "wires": [
             [
                 "d8162b9ca4629a5b",
-                "433d91f3e162caf4",
-                "81361492674fb7c0",
-                "492c1cadca36e7d1"
+                "74c872a9a9f69973"
             ]
         ]
     },
@@ -6243,7 +6149,7 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 270,
+        "x": 330,
         "y": 160,
         "wires": []
     },
@@ -6285,8 +6191,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 60,
+        "x": 1210,
+        "y": 360,
         "wires": []
     },
     {
@@ -6327,8 +6233,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 120,
+        "x": 1210,
+        "y": 420,
         "wires": []
     },
     {
@@ -6369,8 +6275,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 180,
+        "x": 1210,
+        "y": 480,
         "wires": []
     },
     {
@@ -6411,8 +6317,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 240,
+        "x": 1210,
+        "y": 540,
         "wires": []
     },
     {
@@ -6453,8 +6359,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 300,
+        "x": 1210,
+        "y": 600,
         "wires": []
     },
     {
@@ -6495,8 +6401,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 360,
+        "x": 1210,
+        "y": 660,
         "wires": []
     },
     {
@@ -6537,8 +6443,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 420,
+        "x": 1210,
+        "y": 720,
         "wires": []
     },
     {
@@ -6579,8 +6485,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 480,
+        "x": 1210,
+        "y": 780,
         "wires": []
     },
     {
@@ -6597,8 +6503,8 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 580,
+        "x": 860,
+        "y": 880,
         "wires": [
             [
                 "f62aca7b90f5684d"
@@ -6607,106 +6513,6 @@
     },
     {
         "id": "f62aca7b90f5684d",
-        "type": "ui_gauge",
-        "z": "937eae9c233e2057",
-        "name": "Pack Tempature",
-        "group": "264e82142241853b",
-        "order": 4,
-        "width": 2,
-        "height": 2,
-        "gtype": "gage",
-        "title": "Cell Temp 2",
-        "label": "Degrees",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "120",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "className": "",
-        "x": 980,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "c955f21aea96831b",
-        "type": "debug",
-        "z": "937eae9c233e2057",
-        "name": "Tempature Metrics",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 490,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "376110182949bba5",
-        "type": "debug",
-        "z": "937eae9c233e2057",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1170,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "1bb5381723c24dfb",
-        "type": "debug",
-        "z": "937eae9c233e2057",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1170,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "0312fa5764c71bf3",
-        "type": "unit-converter",
-        "z": "937eae9c233e2057",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 620,
-        "wires": [
-            [
-                "22f0e6f51cb46d96"
-            ]
-        ]
-    },
-    {
-        "id": "22f0e6f51cb46d96",
         "type": "ui_gauge",
         "z": "937eae9c233e2057",
         "name": "Pack Tempature",
@@ -6728,12 +6534,63 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 620,
+        "x": 1080,
+        "y": 880,
         "wires": []
     },
     {
-        "id": "6ee0aa003a5aaa68",
+        "id": "c955f21aea96831b",
+        "type": "debug",
+        "z": "937eae9c233e2057",
+        "name": "Tempature Metrics",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 590,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "376110182949bba5",
+        "type": "debug",
+        "z": "937eae9c233e2057",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "1bb5381723c24dfb",
+        "type": "debug",
+        "z": "937eae9c233e2057",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "0312fa5764c71bf3",
         "type": "unit-converter",
         "z": "937eae9c233e2057",
         "category": "temperature",
@@ -6746,60 +6603,16 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 660,
+        "x": 860,
+        "y": 920,
         "wires": [
             [
-                "d2996757757611e9"
+                "22f0e6f51cb46d96"
             ]
         ]
     },
     {
-        "id": "7444ed23df675442",
-        "type": "unit-converter",
-        "z": "937eae9c233e2057",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 700,
-        "wires": [
-            [
-                "0d39ab44270ae812"
-            ]
-        ]
-    },
-    {
-        "id": "c55d045c953c9508",
-        "type": "unit-converter",
-        "z": "937eae9c233e2057",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 740,
-        "wires": [
-            [
-                "fb3984e3de0af9ca"
-            ]
-        ]
-    },
-    {
-        "id": "d2996757757611e9",
+        "id": "22f0e6f51cb46d96",
         "type": "ui_gauge",
         "z": "937eae9c233e2057",
         "name": "Pack Tempature",
@@ -6821,8 +6634,101 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 660,
+        "x": 1080,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "6ee0aa003a5aaa68",
+        "type": "unit-converter",
+        "z": "937eae9c233e2057",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 860,
+        "y": 960,
+        "wires": [
+            [
+                "d2996757757611e9"
+            ]
+        ]
+    },
+    {
+        "id": "7444ed23df675442",
+        "type": "unit-converter",
+        "z": "937eae9c233e2057",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 860,
+        "y": 1000,
+        "wires": [
+            [
+                "0d39ab44270ae812"
+            ]
+        ]
+    },
+    {
+        "id": "c55d045c953c9508",
+        "type": "unit-converter",
+        "z": "937eae9c233e2057",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 860,
+        "y": 1040,
+        "wires": [
+            [
+                "fb3984e3de0af9ca"
+            ]
+        ]
+    },
+    {
+        "id": "d2996757757611e9",
+        "type": "ui_gauge",
+        "z": "937eae9c233e2057",
+        "name": "Pack Tempature",
+        "group": "264e82142241853b",
+        "order": 7,
+        "width": 2,
+        "height": 2,
+        "gtype": "gage",
+        "title": "Cell Temp 2",
+        "label": "Degrees",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1080,
+        "y": 960,
         "wires": []
     },
     {
@@ -6831,7 +6737,7 @@
         "z": "937eae9c233e2057",
         "name": "Pack Tempature",
         "group": "264e82142241853b",
-        "order": 7,
+        "order": 8,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -6848,8 +6754,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 700,
+        "x": 1080,
+        "y": 1000,
         "wires": []
     },
     {
@@ -6858,7 +6764,7 @@
         "z": "937eae9c233e2057",
         "name": "Pack Tempature",
         "group": "264e82142241853b",
-        "order": 8,
+        "order": 9,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -6875,8 +6781,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 740,
+        "x": 1080,
+        "y": 1040,
         "wires": []
     },
     {
@@ -6885,7 +6791,7 @@
         "z": "937eae9c233e2057",
         "name": "",
         "group": "264e82142241853b",
-        "order": 2,
+        "order": 3,
         "width": 6,
         "height": 3,
         "label": "Battery Remaining",
@@ -6917,17 +6823,149 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1290,
-        "y": 1060,
+        "x": 1390,
+        "y": 1360,
         "wires": [
             []
         ]
     },
     {
-        "id": "9c390b5f9a96b40d",
+        "id": "74c872a9a9f69973",
+        "type": "switch",
+        "z": "937eae9c233e2057",
+        "name": "Packet Type",
+        "property": "payload.9",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0x32",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "0x31",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "5c02c78a2cb3a050"
+            ],
+            [
+                "433d91f3e162caf4",
+                "81361492674fb7c0",
+                "492c1cadca36e7d1"
+            ]
+        ],
+        "info": "Switch on packet type.   \n\nThis is at postion 10\n\n"
+    },
+    {
+        "id": "5c02c78a2cb3a050",
+        "type": "buffer-parser",
+        "z": "937eae9c233e2057",
+        "name": "Int to Hex",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "string",
+                "name": "data",
+                "offset": 17,
+                "length": 12,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 380,
+        "y": 280,
+        "wires": [
+            [
+                "7fa5298e07a081f8",
+                "db2649c499785c03"
+            ]
+        ]
+    },
+    {
+        "id": "7fa5298e07a081f8",
+        "type": "function",
+        "z": "937eae9c233e2057",
+        "name": "Time Parser",
+        "func": "var months={1:\"January\",2:\"February\",3:\"March\",4:\"April\",5:\"May\",6:\"June\",7:\"July\",8:\"August\",9:\"September\",10:\"October\",11:\"November\",12:\"December\"};\n\nvar MonthStr = msg.payload.data.substr(0,2);\nvar DayStr = msg.payload.data.substr(2,2);\nvar HourStr = msg.payload.data.substr(4,2);\nvar MinuteStr = msg.payload.data.substr(6,2);\n//msg.payload = Buffer.from(msg.payload.data,\"hex\").toString()\nvar MonthValue = parseInt(MonthStr,16);\nvar DayValue = parseInt(DayStr,16);\nvar HourValue = parseInt(HourStr,16);\nvar MinuteValue = parseInt(MinuteStr,16);\n\nmsg.payload = months[MonthValue] + \"-\" + \n              DayValue.toString() + \" @ \" + \n              HourValue.toString() + \":\" + \n              MinuteValue.toString().padStart(2,\"0\");\n              \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 220,
+        "wires": [
+            [
+                "2f934e1e2870b085"
+            ]
+        ]
+    },
+    {
+        "id": "db2649c499785c03",
+        "type": "debug",
+        "z": "937eae9c233e2057",
+        "name": "",
+        "active": false,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 620,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2f934e1e2870b085",
+        "type": "ui_text",
+        "z": "937eae9c233e2057",
+        "group": "264e82142241853b",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "name": "",
+        "label": "Pack 3 Updated",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1040,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5410c4952d772a6a",
         "type": "inject",
         "z": "937eae9c233e2057",
-        "name": "Get Time",
+        "name": "Time Request",
         "props": [
             {
                 "p": "payload"
@@ -6936,14 +6974,16 @@
         "repeat": "10",
         "crontab": "",
         "once": true,
-        "onceDelay": "10",
+        "onceDelay": "11",
         "topic": "",
-        "payload": "[91,126,44,50,44,48,44,48,44,48,44,52,44,54,44,52,44,68,44,48,44,48,44,48,44,48,44,70,44,68,44,57,44,67,44,36,93]",
+        "payload": "[126,50,48,48,49,52,54,52,68,48,48,48,48,70,68,57,66,13]",
         "payloadType": "bin",
-        "x": 90,
-        "y": 100,
+        "x": 100,
+        "y": 80,
         "wires": [
-            []
+            [
+                "26da81a3888a8af3"
+            ]
         ]
     },
     {
@@ -6981,7 +7021,7 @@
         "setTopic": true,
         "outputs": 1,
         "x": 370,
-        "y": 280,
+        "y": 460,
         "wires": [
             [
                 "65dd19a1f1da2d3b"
@@ -7158,7 +7198,7 @@
         "setTopic": true,
         "outputs": 16,
         "x": 620,
-        "y": 260,
+        "y": 480,
         "wires": [
             [
                 "d69e98cb054ee321"
@@ -7244,8 +7284,8 @@
         "fanOutMultipleResult": false,
         "setTopic": true,
         "outputs": 1,
-        "x": 290,
-        "y": 540,
+        "x": 390,
+        "y": 780,
         "wires": [
             [
                 "451261d2e5cd8e0d",
@@ -7296,8 +7336,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 1,
-        "x": 270,
-        "y": 740,
+        "x": 370,
+        "y": 980,
         "wires": [
             [
                 "7a3484597b302b1f",
@@ -7375,8 +7415,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 5,
-        "x": 510,
-        "y": 800,
+        "x": 610,
+        "y": 1040,
         "wires": [
             [
                 "44b45101ac90a820"
@@ -7409,8 +7449,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 790,
-        "y": 800,
+        "x": 890,
+        "y": 1040,
         "wires": []
     },
     {
@@ -7426,8 +7466,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 490,
-        "y": 720,
+        "x": 590,
+        "y": 960,
         "wires": []
     },
     {
@@ -7443,8 +7483,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 790,
-        "y": 860,
+        "x": 890,
+        "y": 1100,
         "wires": []
     },
     {
@@ -7453,7 +7493,7 @@
         "z": "f7b305b9afc88ce4",
         "name": "",
         "group": "8e5a7ea4290e30ef",
-        "order": 9,
+        "order": 10,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -7470,8 +7510,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 990,
-        "y": 800,
+        "x": 1090,
+        "y": 1040,
         "wires": []
     },
     {
@@ -7553,8 +7593,8 @@
         "fanOutMultipleResult": true,
         "setTopic": true,
         "outputs": 6,
-        "x": 510,
-        "y": 540,
+        "x": 610,
+        "y": 780,
         "wires": [
             [
                 "1c8ac9da3f8d735c",
@@ -7592,8 +7632,8 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 540,
+        "x": 860,
+        "y": 780,
         "wires": [
             [
                 "3dfc79d8b9d7146c"
@@ -7613,8 +7653,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 820,
-        "y": 920,
+        "x": 920,
+        "y": 1160,
         "wires": []
     },
     {
@@ -7630,8 +7670,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 810,
-        "y": 1020,
+        "x": 910,
+        "y": 1260,
         "wires": []
     },
     {
@@ -7645,8 +7685,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1060,
-        "y": 940,
+        "x": 1160,
+        "y": 1180,
         "wires": [
             [
                 "bd3cb3a627d8e084",
@@ -7675,8 +7715,8 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 800,
-        "y": 980,
+        "x": 900,
+        "y": 1220,
         "wires": [
             [
                 "c1afef40d8fe51b3",
@@ -7697,8 +7737,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 1050,
-        "y": 880,
+        "x": 1150,
+        "y": 1120,
         "wires": []
     },
     {
@@ -7714,8 +7754,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 1270,
-        "y": 940,
+        "x": 1370,
+        "y": 1180,
         "wires": []
     },
     {
@@ -7724,7 +7764,7 @@
         "z": "f7b305b9afc88ce4",
         "name": "Pack Battery Remaining",
         "group": "8e5a7ea4290e30ef",
-        "order": 1,
+        "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gage",
@@ -7741,8 +7781,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 1310,
-        "y": 1020,
+        "x": 1410,
+        "y": 1260,
         "wires": []
     },
     {
@@ -7751,7 +7791,7 @@
         "z": "f7b305b9afc88ce4",
         "name": "Pack Tempature",
         "group": "8e5a7ea4290e30ef",
-        "order": 3,
+        "order": 4,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -7768,8 +7808,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 540,
+        "x": 1080,
+        "y": 780,
         "wires": []
     },
     {
@@ -7810,8 +7850,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 60,
+        "x": 1050,
+        "y": 260,
         "wires": []
     },
     {
@@ -7852,8 +7892,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 120,
+        "x": 1050,
+        "y": 320,
         "wires": []
     },
     {
@@ -7894,8 +7934,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 180,
+        "x": 1050,
+        "y": 380,
         "wires": []
     },
     {
@@ -7936,8 +7976,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 240,
+        "x": 1050,
+        "y": 440,
         "wires": []
     },
     {
@@ -7978,8 +8018,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 300,
+        "x": 1050,
+        "y": 500,
         "wires": []
     },
     {
@@ -8020,8 +8060,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 360,
+        "x": 1050,
+        "y": 560,
         "wires": []
     },
     {
@@ -8062,8 +8102,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 420,
+        "x": 1050,
+        "y": 620,
         "wires": []
     },
     {
@@ -8104,32 +8144,15 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 910,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "b55ffc2df8ea860d",
-        "type": "debug",
-        "z": "f7b305b9afc88ce4",
-        "name": "P1 Cell Metrics",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 380,
-        "y": 220,
+        "x": 1050,
+        "y": 680,
         "wires": []
     },
     {
         "id": "48cb30b8eaffd78f",
         "type": "serial out",
         "z": "f7b305b9afc88ce4",
-        "name": "Write USB4",
+        "name": "Write USB0",
         "serial": "267141285873e3c4",
         "x": 330,
         "y": 40,
@@ -8139,14 +8162,14 @@
         "id": "51388b750e3dfd2b",
         "type": "serial in",
         "z": "f7b305b9afc88ce4",
-        "name": "Read USB4",
+        "name": "Read USB0",
         "serial": "267141285873e3c4",
         "x": 90,
-        "y": 100,
+        "y": 140,
         "wires": [
             [
                 "6b666a6e48afbb07",
-                "b02a06345e157d15"
+                "07ea02ed34262fcb"
             ]
         ]
     },
@@ -8163,8 +8186,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 270,
-        "y": 100,
+        "x": 310,
+        "y": 140,
         "wires": []
     },
     {
@@ -8205,8 +8228,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 60,
+        "x": 1250,
+        "y": 260,
         "wires": []
     },
     {
@@ -8247,8 +8270,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 120,
+        "x": 1250,
+        "y": 320,
         "wires": []
     },
     {
@@ -8289,8 +8312,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 180,
+        "x": 1250,
+        "y": 380,
         "wires": []
     },
     {
@@ -8331,8 +8354,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 240,
+        "x": 1250,
+        "y": 440,
         "wires": []
     },
     {
@@ -8373,8 +8396,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 300,
+        "x": 1250,
+        "y": 500,
         "wires": []
     },
     {
@@ -8415,8 +8438,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 360,
+        "x": 1250,
+        "y": 560,
         "wires": []
     },
     {
@@ -8457,8 +8480,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 420,
+        "x": 1250,
+        "y": 620,
         "wires": []
     },
     {
@@ -8499,8 +8522,8 @@
         "peakmode": false,
         "property": "payload",
         "peaktime": 3000,
-        "x": 1110,
-        "y": 480,
+        "x": 1250,
+        "y": 680,
         "wires": []
     },
     {
@@ -8517,8 +8540,8 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 580,
+        "x": 860,
+        "y": 820,
         "wires": [
             [
                 "5f2135ba7f53b243"
@@ -8527,106 +8550,6 @@
     },
     {
         "id": "5f2135ba7f53b243",
-        "type": "ui_gauge",
-        "z": "f7b305b9afc88ce4",
-        "name": "Pack Tempature",
-        "group": "8e5a7ea4290e30ef",
-        "order": 4,
-        "width": 2,
-        "height": 2,
-        "gtype": "gage",
-        "title": "Cell Temp 2",
-        "label": "Degrees",
-        "format": "{{value}}",
-        "min": 0,
-        "max": "120",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "className": "",
-        "x": 980,
-        "y": 580,
-        "wires": []
-    },
-    {
-        "id": "9d4c04da21f43238",
-        "type": "debug",
-        "z": "f7b305b9afc88ce4",
-        "name": "Tempature Metrics",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 510,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "eb4cb29dc2f7ef78",
-        "type": "debug",
-        "z": "f7b305b9afc88ce4",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1170,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "dda8030a30220914",
-        "type": "debug",
-        "z": "f7b305b9afc88ce4",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": true,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "payload",
-        "statusType": "auto",
-        "x": 1170,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "3f503d14a4b0b97e",
-        "type": "unit-converter",
-        "z": "f7b305b9afc88ce4",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 620,
-        "wires": [
-            [
-                "9d531b458ffd8f58"
-            ]
-        ]
-    },
-    {
-        "id": "9d531b458ffd8f58",
         "type": "ui_gauge",
         "z": "f7b305b9afc88ce4",
         "name": "Pack Tempature",
@@ -8648,12 +8571,63 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 620,
+        "x": 1080,
+        "y": 820,
         "wires": []
     },
     {
-        "id": "77d444d80cd62817",
+        "id": "9d4c04da21f43238",
+        "type": "debug",
+        "z": "f7b305b9afc88ce4",
+        "name": "Tempature Metrics",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 610,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "eb4cb29dc2f7ef78",
+        "type": "debug",
+        "z": "f7b305b9afc88ce4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "dda8030a30220914",
+        "type": "debug",
+        "z": "f7b305b9afc88ce4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "3f503d14a4b0b97e",
         "type": "unit-converter",
         "z": "f7b305b9afc88ce4",
         "category": "temperature",
@@ -8666,60 +8640,16 @@
         "roundOutputField": true,
         "outputFieldDecimals": 2,
         "name": "",
-        "x": 760,
-        "y": 660,
+        "x": 860,
+        "y": 860,
         "wires": [
             [
-                "34f07815b94f6a7d"
+                "9d531b458ffd8f58"
             ]
         ]
     },
     {
-        "id": "82880dfc770c05ff",
-        "type": "unit-converter",
-        "z": "f7b305b9afc88ce4",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 700,
-        "wires": [
-            [
-                "82dc059e6dd4ee51"
-            ]
-        ]
-    },
-    {
-        "id": "5c1aba850e764dc6",
-        "type": "unit-converter",
-        "z": "f7b305b9afc88ce4",
-        "category": "temperature",
-        "inputUnit": "K",
-        "outputUnit": "F",
-        "inputField": "payload",
-        "outputField": "payload",
-        "inputFieldType": "msg",
-        "outputFieldType": "msg",
-        "roundOutputField": true,
-        "outputFieldDecimals": 2,
-        "name": "",
-        "x": 760,
-        "y": 740,
-        "wires": [
-            [
-                "5fa37cd0d49e534d"
-            ]
-        ]
-    },
-    {
-        "id": "34f07815b94f6a7d",
+        "id": "9d531b458ffd8f58",
         "type": "ui_gauge",
         "z": "f7b305b9afc88ce4",
         "name": "Pack Tempature",
@@ -8741,8 +8671,101 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 660,
+        "x": 1080,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "77d444d80cd62817",
+        "type": "unit-converter",
+        "z": "f7b305b9afc88ce4",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 860,
+        "y": 900,
+        "wires": [
+            [
+                "34f07815b94f6a7d"
+            ]
+        ]
+    },
+    {
+        "id": "82880dfc770c05ff",
+        "type": "unit-converter",
+        "z": "f7b305b9afc88ce4",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 860,
+        "y": 940,
+        "wires": [
+            [
+                "82dc059e6dd4ee51"
+            ]
+        ]
+    },
+    {
+        "id": "5c1aba850e764dc6",
+        "type": "unit-converter",
+        "z": "f7b305b9afc88ce4",
+        "category": "temperature",
+        "inputUnit": "K",
+        "outputUnit": "F",
+        "inputField": "payload",
+        "outputField": "payload",
+        "inputFieldType": "msg",
+        "outputFieldType": "msg",
+        "roundOutputField": true,
+        "outputFieldDecimals": 2,
+        "name": "",
+        "x": 860,
+        "y": 980,
+        "wires": [
+            [
+                "5fa37cd0d49e534d"
+            ]
+        ]
+    },
+    {
+        "id": "34f07815b94f6a7d",
+        "type": "ui_gauge",
+        "z": "f7b305b9afc88ce4",
+        "name": "Pack Tempature",
+        "group": "8e5a7ea4290e30ef",
+        "order": 7,
+        "width": 2,
+        "height": 2,
+        "gtype": "gage",
+        "title": "Cell Temp 2",
+        "label": "Degrees",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "120",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1080,
+        "y": 900,
         "wires": []
     },
     {
@@ -8751,7 +8774,7 @@
         "z": "f7b305b9afc88ce4",
         "name": "Pack Tempature",
         "group": "8e5a7ea4290e30ef",
-        "order": 7,
+        "order": 8,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -8768,8 +8791,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 700,
+        "x": 1080,
+        "y": 940,
         "wires": []
     },
     {
@@ -8778,7 +8801,7 @@
         "z": "f7b305b9afc88ce4",
         "name": "Pack Tempature",
         "group": "8e5a7ea4290e30ef",
-        "order": 8,
+        "order": 9,
         "width": 2,
         "height": 2,
         "gtype": "gage",
@@ -8795,8 +8818,8 @@
         "seg1": "",
         "seg2": "",
         "className": "",
-        "x": 980,
-        "y": 740,
+        "x": 1080,
+        "y": 980,
         "wires": []
     },
     {
@@ -8805,7 +8828,7 @@
         "z": "f7b305b9afc88ce4",
         "name": "",
         "group": "8e5a7ea4290e30ef",
-        "order": 2,
+        "order": 3,
         "width": 6,
         "height": 3,
         "label": "Battery Remaining",
@@ -8837,54 +8860,11 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1290,
-        "y": 1060,
+        "x": 1390,
+        "y": 1300,
         "wires": [
             []
         ]
-    },
-    {
-        "id": "b02a06345e157d15",
-        "type": "switch",
-        "z": "f7b305b9afc88ce4",
-        "name": "Packet Type",
-        "property": "payload.8",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "0x35",
-                "vt": "num"
-            },
-            {
-                "t": "eq",
-                "v": "0x30",
-                "vt": "num"
-            },
-            {
-                "t": "eq",
-                "v": "0x30",
-                "vt": "num"
-            }
-        ],
-        "checkall": "false",
-        "repair": false,
-        "outputs": 3,
-        "x": 130,
-        "y": 200,
-        "wires": [
-            [],
-            [
-                "5a91ff66178d2523",
-                "9692f145fed3014d",
-                "3fdcdb1ad211d18f",
-                "26a15e30e5a256ed"
-            ],
-            [
-                "b55ffc2df8ea860d"
-            ]
-        ],
-        "info": "Switch on packet type.   \n\nThis is at postion 10\n\n"
     },
     {
         "id": "5a91ff66178d2523",
@@ -8899,8 +8879,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 360,
-        "y": 340,
+        "x": 620,
+        "y": 320,
         "wires": []
     },
     {
@@ -8927,5 +8907,694 @@
                 "48cb30b8eaffd78f"
             ]
         ]
+    },
+    {
+        "id": "07ea02ed34262fcb",
+        "type": "switch",
+        "z": "f7b305b9afc88ce4",
+        "name": "Packet Type",
+        "property": "payload.9",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0x32",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "0x31",
+                "vt": "num"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "49bfa0d22ff6dff6"
+            ],
+            [
+                "9692f145fed3014d",
+                "3fdcdb1ad211d18f",
+                "26a15e30e5a256ed"
+            ]
+        ],
+        "info": "Switch on packet type.   \n\nThis is at postion 10\n\n"
+    },
+    {
+        "id": "3cceeabd9b550376",
+        "type": "inject",
+        "z": "f7b305b9afc88ce4",
+        "name": "Time Request",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "11",
+        "topic": "",
+        "payload": "[126,50,48,48,49,52,54,52,68,48,48,48,48,70,68,57,66,13]",
+        "payloadType": "bin",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "48cb30b8eaffd78f"
+            ]
+        ]
+    },
+    {
+        "id": "49bfa0d22ff6dff6",
+        "type": "buffer-parser",
+        "z": "f7b305b9afc88ce4",
+        "name": "Int to Hex",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "string",
+                "name": "data",
+                "offset": 17,
+                "length": 12,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 380,
+        "y": 240,
+        "wires": [
+            [
+                "ccd47279dc765225",
+                "19b1b41ff9ee1446"
+            ]
+        ]
+    },
+    {
+        "id": "ccd47279dc765225",
+        "type": "function",
+        "z": "f7b305b9afc88ce4",
+        "name": "Time Parser",
+        "func": "var months={1:\"January\",2:\"February\",3:\"March\",4:\"April\",5:\"May\",6:\"June\",7:\"July\",8:\"August\",9:\"September\",10:\"October\",11:\"November\",12:\"December\"};\n\nvar MonthStr = msg.payload.data.substr(0,2);\nvar DayStr = msg.payload.data.substr(2,2);\nvar HourStr = msg.payload.data.substr(4,2);\nvar MinuteStr = msg.payload.data.substr(6,2);\n//msg.payload = Buffer.from(msg.payload.data,\"hex\").toString()\nvar MonthValue = parseInt(MonthStr,16);\nvar DayValue = parseInt(DayStr,16);\nvar HourValue = parseInt(HourStr,16);\nvar MinuteValue = parseInt(MinuteStr,16);\n\nmsg.payload = months[MonthValue] + \"-\" + \n              DayValue.toString() + \" @ \" + \n              HourValue.toString() + \":\" + \n              MinuteValue.toString().padStart(2,\"0\");\n              \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 180,
+        "wires": [
+            [
+                "cd5acbd4ac690429"
+            ]
+        ]
+    },
+    {
+        "id": "19b1b41ff9ee1446",
+        "type": "debug",
+        "z": "f7b305b9afc88ce4",
+        "name": "",
+        "active": false,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 620,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "cd5acbd4ac690429",
+        "type": "ui_text",
+        "z": "f7b305b9afc88ce4",
+        "group": "8e5a7ea4290e30ef",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "name": "",
+        "label": "Pack 3 Updated",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1080,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "fd288b1afda07018",
+        "type": "inject",
+        "z": "aaa87ba009c361b1",
+        "name": "Time Packet",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "[126,50,48,48,49,52,54,48,48,50,48,48,69,48,55,69,54,48,53,49,48,48,70,48,54,49,69,70,65,65,50]",
+        "payloadType": "bin",
+        "x": 110,
+        "y": 120,
+        "wires": [
+            [
+                "e005ecb3a0675a80"
+            ]
+        ]
+    },
+    {
+        "id": "e005ecb3a0675a80",
+        "type": "buffer-parser",
+        "z": "aaa87ba009c361b1",
+        "name": "Int to Hex String",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "string",
+                "name": "data",
+                "offset": 17,
+                "length": 12,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "c3dfe4bd3298d8fe",
+                "04e779af58c15869",
+                "598481a857dac920"
+            ]
+        ]
+    },
+    {
+        "id": "c3dfe4bd3298d8fe",
+        "type": "buffer-parser",
+        "z": "aaa87ba009c361b1",
+        "name": "Time Splitter",
+        "data": "payload.data",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "int8",
+                "name": "Month",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Day",
+                "offset": 1,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Hour",
+                "offset": 2,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Minute",
+                "offset": 3,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Second",
+                "offset": 4,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "value",
+        "resultTypeType": "output",
+        "multipleResult": true,
+        "fanOutMultipleResult": true,
+        "setTopic": true,
+        "outputs": 5,
+        "x": 530,
+        "y": 120,
+        "wires": [
+            [
+                "af37d2fadd1a305a"
+            ],
+            [
+                "af38f2d615a8fb2e"
+            ],
+            [
+                "4c76cf123e4f4fd9"
+            ],
+            [
+                "d8f1508acc345dcf"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "af37d2fadd1a305a",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "Month",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 730,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "af38f2d615a8fb2e",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "Day",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 730,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4c76cf123e4f4fd9",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "Hour",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 730,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d8f1508acc345dcf",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "Minute",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 730,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "04e779af58c15869",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 490,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "46f2e36d.79332c",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 450,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "5c3a833c.59b90c",
+        "type": "function",
+        "z": "aaa87ba009c361b1",
+        "name": "",
+        "func": "msg.payload = Buffer.from(msg.payload.d.value,\"hex\").toString()\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 440,
+        "wires": [
+            [
+                "b874a36c.dd7ef"
+            ]
+        ]
+    },
+    {
+        "id": "b874a36c.dd7ef",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 630,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "f1adb05f.c5deb",
+        "type": "inject",
+        "z": "aaa87ba009c361b1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload",
+                "v": "{\"d\":{\"value\":\"32352e3339\"}}",
+                "vt": "json"
+            },
+            {
+                "p": "topic",
+                "v": "fake ibmiot",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "fake ibmiot",
+        "payload": "{\"d\":{\"value\":\"32352e3339\"}}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 380,
+        "wires": [
+            [
+                "5c3a833c.59b90c",
+                "46f2e36d.79332c"
+            ]
+        ]
+    },
+    {
+        "id": "598481a857dac920",
+        "type": "function",
+        "z": "aaa87ba009c361b1",
+        "name": "",
+        "func": "var months={1:\"January\",2:\"February\",3:\"March\",4:\"April\",5:\"May\",6:\"June\",7:\"July\",8:\"August\",9:\"September\",10:\"October\",11:\"November\",12:\"December\"};\n\nvar MonthStr = msg.payload.data.substr(0,2);\nvar DayStr = msg.payload.data.substr(2,2);\nvar HourStr = msg.payload.data.substr(4,2);\nvar MinuteStr = msg.payload.data.substr(6,2);\n//msg.payload = Buffer.from(msg.payload.data,\"hex\").toString()\nvar MonthValue = parseInt(MonthStr,16);\nvar DayValue = parseInt(DayStr,16);\nvar HourValue = parseInt(HourStr,16);\nvar MinuteValue = parseInt(MinuteStr,16);\n\nmsg.payload = months[MonthValue] + \"-\" + \n              DayValue.toString() + \" @ \" + \n              HourValue.toString() + \":\" + \n              MinuteValue.toString().padStart(2,\"0\");\n              \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 200,
+        "wires": [
+            [
+                "b38d0d63875589ce"
+            ]
+        ]
+    },
+    {
+        "id": "b38d0d63875589ce",
+        "type": "debug",
+        "z": "aaa87ba009c361b1",
+        "name": "Date",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 730,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "c021ab548b75b539",
+        "type": "buffer-parser",
+        "z": "6555bc107374a35d",
+        "name": "Time Splitter",
+        "data": "payload.data",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "int8",
+                "name": "Month",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Day",
+                "offset": 1,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Hour",
+                "offset": 2,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Minute",
+                "offset": 3,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            },
+            {
+                "type": "int8",
+                "name": "Second",
+                "offset": 4,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "0",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "value",
+        "resultTypeType": "output",
+        "multipleResult": true,
+        "fanOutMultipleResult": true,
+        "setTopic": true,
+        "outputs": 5,
+        "x": 150,
+        "y": 60,
+        "wires": [
+            [
+                "59a2110a86a2eced"
+            ],
+            [
+                "77d006028ecc5a42"
+            ],
+            [
+                "a470d0e44dd436c4"
+            ],
+            [
+                "4c3e2e9ec0e90506"
+            ],
+            [
+                "8f69588abe236d1d"
+            ]
+        ]
+    },
+    {
+        "id": "59a2110a86a2eced",
+        "type": "debug",
+        "z": "6555bc107374a35d",
+        "name": "Month",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 390,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "77d006028ecc5a42",
+        "type": "debug",
+        "z": "6555bc107374a35d",
+        "name": "Day",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 530,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "a470d0e44dd436c4",
+        "type": "debug",
+        "z": "6555bc107374a35d",
+        "name": "Hour",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 670,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "4c3e2e9ec0e90506",
+        "type": "debug",
+        "z": "6555bc107374a35d",
+        "name": "Minute",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 810,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "8f69588abe236d1d",
+        "type": "debug",
+        "z": "6555bc107374a35d",
+        "name": "Second",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 960,
+        "y": 20,
+        "wires": []
     }
 ]
