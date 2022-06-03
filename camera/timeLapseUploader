@@ -1,0 +1,115 @@
+#! /usr/bin/python3
+
+import sys
+import getopt
+import json
+import fnmatch
+import os
+import requests
+from datetime import date
+from datetime import datetime
+from datetime import timedelta
+
+
+source = ""
+arg_help = "{0} -i <inputdir> "
+
+# Python program to demonstrate
+# command line arguments
+
+
+import getopt, sys
+
+
+# Remove 1st argument from the
+# list of command line arguments
+argumentList = sys.argv[1:]
+
+# Options
+options = "hi:"
+
+# Long options
+long_options = ["Help", "inputdir", "outputname="]
+
+try:
+# Parsing argument
+    arguments, values = getopt.getopt(argumentList, options, long_options)
+
+# checking each argument
+    for currentArgument, currentValue in arguments:
+
+        if currentArgument in ("-h", "--Help"):
+            print ("Displaying Help")
+            sys.exit(1)
+
+        elif currentArgument in ("-i", "--inputdir"):
+            source = currentValue
+            print ("Reading images from", source)
+
+        elif currentArgument in ("-o", "--Output"):
+            print (("Enabling special output mode (% s)") % (currentValue))
+
+except getopt.error as err:
+        # output error, and return with an error code
+        print (str(err))
+
+if (len(source) == 0) :
+    print( "Argument -i is missing" )
+    sys.exit(2)
+
+print('input:', source)
+                
+
+#, timedelta,datetime
+
+# Get yesterdays date info
+# Get today's date
+today = date.today()
+print("Today is: ", today)
+
+# Yesterday date
+yesterday = today - timedelta(days = 1)
+print("Yesterday is: ", yesterday)
+
+
+vname = source + "-" +  yesterday.strftime("%m") + yesterday.strftime("%d")
+# /var/lib/images/east/east.0602-1128.jpg
+ipath = "/var/lib/images/" + source + "/" + source + "." +  yesterday.strftime("%m") + yesterday.strftime("%d") + "-*.jpg"
+opath = "/var/lib/images/timelapse/" + vname  + ".mp4"
+print(ipath)
+print(opath)
+
+
+command = "/usr/bin/ffmpeg -framerate 20 -loglevel quiet -y -pattern_type glob -i \"" + ipath + "\" " + opath
+
+print(command)
+#os.system(command)
+
+url = "https://muse.ai/api/files/upload"
+
+headers = { "Key":"wEzmVP9HHWhR26V4X4g45R2061538d80", }
+params = {'visibility': 'private', 'collection': 'gSrVeFW'}
+f = open(opath, 'rb')
+
+files = {"file": (opath, f)}
+
+print("Uploading: [ " + opath)
+
+r = requests.post(url, headers=headers, files=files, params=params)
+# r = requests.post(url, data=m,headers=headers)
+print("Results: ")
+jsonResponse = r.json()
+
+print("File ID: " + jsonResponse["fid"])
+
+# Set attributes
+url = "https://muse.ai/api/files/set/" + jsonResponse["fid"]      
+
+json_data = {
+    'title': vname,
+    'visibility': 'public',
+}
+      
+response = requests.post(url, headers=headers, json=json_data)
+print("Results: ")
+print(response)
