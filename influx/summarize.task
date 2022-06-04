@@ -1,0 +1,13 @@
+; Task that runs every minute to summarize the data
+;
+;
+option task = {name: "Summary Data", every: 1m}
+
+data =
+    from(bucket: "RanchData")
+        |> range(start: -task.every)
+        |> filter(fn: (r) => r["_field"] == "Pack%Capacity")
+
+data
+    |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+    |> to(bucket: "RanchMetricsSummary", org: "BVRanch")
