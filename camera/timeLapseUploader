@@ -81,18 +81,15 @@ print(opath)
 
 
 command = "/usr/bin/ffmpeg -framerate 20 -loglevel quiet -y -pattern_type glob -i \"" + ipath + "\" " + opath
-
 print(command)
-#os.system(command)
+os.system(command)
 
 url = "https://muse.ai/api/files/upload"
-
 headers = { "Key":"wEzmVP9HHWhR26V4X4g45R2061538d80", }
 params = {'visibility': 'private', 'collection': 'gSrVeFW'}
+
 f = open(opath, 'rb')
-
 files = {"file": (opath, f)}
-
 print("Uploading: [ " + opath)
 
 r = requests.post(url, headers=headers, files=files, params=params)

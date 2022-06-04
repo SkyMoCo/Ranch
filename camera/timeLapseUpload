@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Upload them all
+/opt/camera/bin/timeLapseUploader -i east
+/opt/camera/bin/timeLapseUploader -i west
+/opt/camera/bin/timeLapseUploader -i creek
+/opt/camera/bin/timeLapseUploader -i patio
