@@ -1,0 +1,28 @@
+
+
+Create "Ranch" bucket and RW token on target server
+uDRzWEaSfemtBbZKgv_F-U-QTo9sDA8lIt4qyvMi8tCOe98CGaUWDDWWD1juA2i0KV4zhzmi8PIeip9YmQe83w==
+
+influx config create --config-name Ranch \
+  --host-url http://localhost:8086 \
+  --org BVRanch \
+  --token fhzv75D_IS5fHl-YtcQGLmz6q_mx51kncFL12bIrJWvXhrZxhtza1QAqRFdqKnXmIMqjgRdEaYoFpFxlmTh7GQ== \
+  --active
+
+influx  auth create  --org BVRanch  --operator
+
+
+influx remote create \
+  --name SmokeWood \
+  --remote-url http://172.26.0.250:8086 \
+  --remote-api-token ealK3GURsU8wVChsvTK9dA61zFlHnLCoPXGFGJveCP9zLV0BlAwDqSpI4oCoK3dA-aqsodWIRYK7vUfUS0zQBw== \
+  --remote-org-id 6426a091749400f9
+
+influx replication create \
+  --name Replication-to-Smokewood \
+  --remote-id 09741fe14a98b000 \
+  --local-bucket-id bf5bb3c67c65d5ce \
+  --remote-bucket-id  f3cfb458aa45f9d8
+ 
+  
+  
